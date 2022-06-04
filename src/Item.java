@@ -18,5 +18,9 @@ public class Item {
         return color;
     }
 
+    public void setColor(int color) {
+        this.color = Color.values()[color];
+    }
+
     
 }
