@@ -1,6 +1,12 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        Item it = new Item();
-        System.out.println(it.getColor());
+        Game g = new Game();
+        int i=0;
+        while(i<32){
+            g.Gamming();
+            System.out.println("");
+            i++;
+        }
+
     }
 }

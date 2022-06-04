@@ -9,7 +9,7 @@ public class Item {
 
     private Color getRandColor() {
         Random rand = new Random();
-        int r = (rand.nextInt()%4);
+        int r = Math.abs(rand.nextInt()%4);
         return Color.values()[r];
     }
 
