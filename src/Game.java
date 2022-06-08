@@ -2,18 +2,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
-    private ArrayList<Item> vector;
     private int gotcha;
+    private ArrayList<Player> players;
 
-    public Game(){
-        this.vector = new ArrayList<>();
+    public Game(int numPlayers) {
+        players= new ArrayList<>();
+        addPlayer(numPlayers);
         gotcha = 0;
     }
-
-    public ArrayList<Item> getVector() {
-        return vector;
-    }
-
 
     public int getGotcha() {
         return gotcha;
@@ -23,38 +19,71 @@ public class Game {
         this.gotcha++;
     }
 
-    public void Gamming() throws Exception{
-        Item it = new Item();
-        vector.add(it);
-        try {
-            show();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        if(!trying()){
-            throw new Exception("Errou!");
+    // Main game
+    public void Gamming() throws Exception {
+        int index = 0;
+        while (verify()) {
+            Player play = players.get(index);
+            if (players.get(index).isStatus()) {          
+                Item it = new Item();
+                play.getVector().add(it);
+                try {
+                    System.out.println("Jogador" + play.getNamePlayer());
+                    show(play);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (!trying(play)) {
+                    System.out.println("Errou!\n");
+                    play.setStatus();
+                    
+                }
+            }
+            else{
+                System.out.println("Jogador"+play.getNamePlayer()+" está fora...");
+            }
+
+            //checkers
+            index++;
+            if(index==players.size()) index=0;
         }
     }
 
-    public void show() throws InterruptedException {
-        for(Item i : this.vector){
+    // print game
+    public void show(Player play) throws InterruptedException {
+        for (Item i : play.getVector()) {
             System.out.println(i.getColor());
             Thread.sleep(2000);
         }
     }
 
-    public boolean trying() {
+    // tryng accept
+    public boolean trying(Player play) {
         Scanner input = new Scanner(System.in);
         int choose;
-        System.out.println("Digite 0, 1, 2 ou 3:");
-        for (Item it : this.vector) {
+        System.out.println("Digite AZ0, VR1, AM2 ou VM3:");
+        for (Item it : play.getVector()) {
             choose = input.nextInt();
-            if(!it.getColor().equals(Color.values()[choose]))
+            if (!it.getColor().equals(Color.values()[choose]))
                 return false;
         }
         return true;
     }
 
-    
+    // new player add
+    private void addPlayer(int numPlayers) {
+        for (int i = 0; i < numPlayers && i < 4; i++) {
+            players.add(new Player(i));
+        }
+    }
+
+    private boolean verify() {
+        for (Player player : players) {
+            if(player.isStatus()){
+                return true;
+            } 
+        }
+        return false;
+    }
+
 }
