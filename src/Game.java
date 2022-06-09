@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.xml.transform.Source;
+
 public class Game {
     private int gotcha;
     private ArrayList<Player> players;
@@ -47,6 +49,7 @@ public class Game {
             index++;
             if(index==players.size()) index=0;
         }
+        endGame();
     }
 
     // print game
@@ -67,6 +70,7 @@ public class Game {
             if (!it.getColor().equals(Color.values()[choose]))
                 return false;
         }
+        play.addPontos();
         return true;
     }
 
@@ -84,6 +88,13 @@ public class Game {
             } 
         }
         return false;
+    }
+
+    private void endGame(){
+        System.out.println("Fim de jogo! \nPontuação:");
+        for (Player player : players) {
+            System.out.println("Jogador"+player.getNamePlayer()+": "+player.getPontos());
+        }
     }
 
 }
