@@ -1,16 +1,17 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.xml.transform.Source;
-
 public class Game {
     private int gotcha;
+    private boolean modeGame;
+    private int coutPlayers;
     private ArrayList<Player> players;
 
-    public Game(int numPlayers) {
-        players= new ArrayList<>();
+    public Game(int numPlayers, int modeSelect) {
+        this.modeGame = (numPlayers<2 ? true : false); //true=singleplayer; false=multiplayer
+        this.players= new ArrayList<>();
+        this.gotcha = modeSelect;
         addPlayer(numPlayers);
-        gotcha = 0;
     }
 
     public int getGotcha() {
@@ -42,12 +43,13 @@ public class Game {
                 }
             }
             else{
-                System.out.println("Jogador"+play.getNamePlayer()+" está fora...");
+                System.out.println("\nJogador"+play.getNamePlayer()+" está fora...\n");
             }
 
             //checkers
             index++;
             if(index==players.size()) index=0;
+            if(play.getPontos()>=gotcha && modeGame) break;
         }
         endGame();
     }
@@ -56,7 +58,7 @@ public class Game {
     public void show(Player play) throws InterruptedException {
         for (Item i : play.getVector()) {
             System.out.println(i.getColor());
-            Thread.sleep(2000);
+            Thread.sleep(1200);
         }
     }
 
@@ -74,6 +76,7 @@ public class Game {
         return true;
     }
 
+
     // new player add
     private void addPlayer(int numPlayers) {
         for (int i = 0; i < numPlayers && i < 4; i++) {
@@ -81,18 +84,27 @@ public class Game {
         }
     }
 
+    //check satatus player
     private boolean verify() {
+        this.coutPlayers=0;
         for (Player player : players) {
             if(player.isStatus()){
                 return true;
-            } 
+            }
+            else{
+                coutPlayers++;
+            }
+        }
+        if(coutPlayers==players.size()-1){
+            this.modeGame=true;
         }
         return false;
     }
 
+    //ending game
     private void endGame(){
         System.out.println("Fim de jogo! \nPontuação:");
-        for (Player player : players) {
+        for (Player player : players) {           
             System.out.println("Jogador"+player.getNamePlayer()+": "+player.getPontos());
         }
     }
