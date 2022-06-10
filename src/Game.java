@@ -4,13 +4,12 @@ import java.util.Scanner;
 public class Game {
     private int gotcha;
     private boolean modeGame;
-    private int coutPlayers;
     private ArrayList<Player> players;
 
-    public Game(int numPlayers, int modeSelect) {
+    public Game(int numPlayers, int codeSelect) {
         this.modeGame = (numPlayers<2 ? true : false); //true=singleplayer; false=multiplayer
         this.players= new ArrayList<>();
-        this.gotcha = modeSelect;
+        this.gotcha = modeSelect(codeSelect);
         addPlayer(numPlayers);
     }
 
@@ -44,6 +43,7 @@ public class Game {
             }
             else{
                 System.out.println("\nJogador"+play.getNamePlayer()+" está fora...\n");
+                verifyPlayers();
             }
 
             //checkers
@@ -86,17 +86,10 @@ public class Game {
 
     //check satatus player
     private boolean verify() {
-        this.coutPlayers=0;
         for (Player player : players) {
             if(player.isStatus()){
                 return true;
             }
-            else{
-                coutPlayers++;
-            }
-        }
-        if(coutPlayers==players.size()-1){
-            this.modeGame=true;
         }
         return false;
     }
@@ -106,6 +99,28 @@ public class Game {
         System.out.println("Fim de jogo! \nPontuação:");
         for (Player player : players) {           
             System.out.println("Jogador"+player.getNamePlayer()+": "+player.getPontos());
+        }
+    }
+
+    private int modeSelect( int code) {
+        switch(code){
+            case 0: return 4; //TESTE
+            case 10: return 8;
+            case 20: return 14;
+            case 30: return 20;
+            case 40: return 31;
+            default: throw new Error("Error ModeSelect: Erro ao dissemimar escolha");
+        }
+        
+    }
+
+    private void verifyPlayers(){
+        int coutPlayers=0;
+        for (int i = 0; i < players.size(); i++) {
+            if(!players.get(i).isStatus()) coutPlayers++;
+        }
+        if(coutPlayers==1){
+            this.modeGame=true;
         }
     }
 
