@@ -4,11 +4,13 @@ import java.util.Scanner;
 public class Game {
     private int gotcha;
     private boolean modeGame;
+    private ArrayList<Item> vector;
     private ArrayList<Player> players;
 
     public Game(int numPlayers, int codeSelect) {
         this.modeGame = (numPlayers<2 ? true : false); //true=singleplayer; false=multiplayer
         this.players= new ArrayList<>();
+        this.vector = new ArrayList<>();
         this.gotcha = modeSelect(codeSelect);
         addPlayer(numPlayers);
     }
@@ -21,6 +23,10 @@ public class Game {
         this.gotcha++;
     }
 
+    public ArrayList<Item> getVector() {
+        return vector;
+    }
+
     // Main game
     public void Gamming() throws Exception {
         int index = 0;
@@ -28,7 +34,7 @@ public class Game {
             Player play = players.get(index);
             if (players.get(index).isStatus()) {          
                 Item it = new Item();
-                play.getVector().add(it);
+                this.getVector().add(it);
                 try {
                     System.out.println("Jogador" + play.getNamePlayer());
                     show(play);
@@ -56,7 +62,7 @@ public class Game {
 
     // print game
     public void show(Player play) throws InterruptedException {
-        for (Item i : play.getVector()) {
+        for (Item i : this.getVector()) {
             System.out.println(i.getColor());
             Thread.sleep(1200);
         }
@@ -67,7 +73,7 @@ public class Game {
         Scanner input = new Scanner(System.in);
         int choose;
         System.out.println("Digite AZ0, VR1, AM2 ou VM3:");
-        for (Item it : play.getVector()) {
+        for (Item it : this.getVector()) {
             choose = input.nextInt();
             if (!it.getColor().equals(Color.values()[choose]))
                 return false;

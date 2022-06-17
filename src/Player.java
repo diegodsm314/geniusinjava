@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Player {
-    private ArrayList<Item> vector;
+    
     private boolean status;
     private int pontos;
     private int namePlayer;
@@ -11,15 +11,10 @@ public class Player {
         this.namePlayer = i;
         this.status = true;
         this.pontos = 0;
-        this.vector = new ArrayList<>();
     }
 
     public int getNamePlayer() {
         return namePlayer;
-    }
-
-    public ArrayList<Item> getVector() {
-        return vector;
     }
 
     public boolean isStatus() {
