@@ -34,7 +34,7 @@ public class Game {
             Player play = players.get(index);
             if (players.get(index).isStatus()) {          
                 Item it = new Item();
-                this.getVector().add(it);
+                this.getVector().add(it);  
                 try {
                     System.out.println("Jogador" + play.getNamePlayer());
                     show(play);
@@ -43,8 +43,7 @@ public class Game {
                 }
                 if (!trying(play)) {
                     System.out.println("Errou!\n");
-                    play.setStatus();
-                    
+                    play.setStatus();  
                 }
             }
             else{
@@ -55,7 +54,46 @@ public class Game {
             //checkers
             index++;
             if(index==players.size()) index=0;
-            if(play.getPontos()>=gotcha && modeGame) break;
+            if(play.getPoints()>=gotcha && modeGame) break;
+        }
+        endGame();
+    }
+
+    public void createGamming() {
+        int index = 0;
+        boolean first = true;
+        while (verify()) {
+            Player play = players.get(index);
+            if (players.get(index).isStatus()) {           
+                try {
+                    System.out.println("Jogador" + play.getNamePlayer());
+                    if(first)
+                        addItem();
+                    else{
+                        show(play);
+                        if (!trying(play)) {
+                            System.out.println("Errou!\n");
+                            play.setStatus();                
+                        }
+                        else{
+                            addItem();
+                        }
+                    }
+                    first = false;
+                } 
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                System.out.println("\nJogador"+play.getNamePlayer()+" está fora...\n");
+                verifyPlayers();
+            }
+
+            //checkers
+            index++;
+            if(index==players.size()) index=0;
+            if(play.getPoints()>=gotcha && modeGame) break;
         }
         endGame();
     }
@@ -78,7 +116,6 @@ public class Game {
             if (!it.getColor().equals(Color.values()[choose]))
                 return false;
         }
-        play.addPontos();
         return true;
     }
 
@@ -94,6 +131,7 @@ public class Game {
     private boolean verify() {
         for (Player player : players) {
             if(player.isStatus()){
+                player.addPoints(); 
                 return true;
             }
         }
@@ -104,7 +142,7 @@ public class Game {
     private void endGame(){
         System.out.println("Fim de jogo! \nPontuação:");
         for (Player player : players) {           
-            System.out.println("Jogador"+player.getNamePlayer()+": "+player.getPontos());
+            System.out.println("Jogador"+player.getNamePlayer()+": "+player.getPoints());
         }
     }
 
@@ -128,6 +166,14 @@ public class Game {
         if(coutPlayers==1){
             this.modeGame=true;
         }
+    }
+
+    private void addItem(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Clique em uma cor");
+        Item it = new Item();
+        it.setColor(input.nextInt());
+        vector.add(it);
     }
 
 }

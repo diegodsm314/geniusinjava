@@ -1,16 +1,14 @@
-import java.util.ArrayList;
-
 public class Player {
     
     private boolean status;
-    private int pontos;
+    private int points;
     private int namePlayer;
     
 
     public Player(int i) {
         this.namePlayer = i;
         this.status = true;
-        this.pontos = 0;
+        this.points = 0;
     }
 
     public int getNamePlayer() {
@@ -25,12 +23,12 @@ public class Player {
         this.status = false;
     }
 
-    public int getPontos() {
-        return pontos;
+    public int getPoints() {
+        return points;
     }
 
-    public void addPontos() {
-        this.pontos++;
+    public void addPoints() {
+        this.points++;
     }
 
     

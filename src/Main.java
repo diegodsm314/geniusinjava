@@ -6,6 +6,6 @@ public class Main {
         //[Seleção de modo de jogo]
         System.out.println("Digite a quantidade de jogadores");
         Game g = new Game(input.nextInt(),0);
-        g.Gamming();
+        g.createGamming();
     }
 }
