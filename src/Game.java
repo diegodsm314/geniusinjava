@@ -32,14 +32,17 @@ public class Game {
     // Main game
     public void Gamming() throws Exception {
         int index = 0;
+        int lastPlayer=99;
         while (verify()) {
             Player play = players.get(index);
+            verifyPlayers();
             if (players.get(index).isStatus()) {          
                 Item it = new Item();
                 this.getVector().add(it);  
                 try {
                     s.clear();
-                    s.line("Jogador" + play.getNamePlayer());
+                    lastPlayer = play.getNamePlayer();
+                    s.line("Jogador" + lastPlayer);
                     this.show(play);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -51,7 +54,6 @@ public class Game {
             }
             else{
                 s.line("\nJogador"+play.getNamePlayer()+" está fora...\n");
-                verifyPlayers();
             }
 
             //checkers
@@ -59,17 +61,24 @@ public class Game {
             if(index==players.size()) index=0;
             if(play.getPoints()>=gotcha && modeGame) break;
         }
-        endGame();
+        s.endGame(lastPlayer);
     }
 
     public void createGamming() throws IOException, InterruptedException {
         int index = 0;
         boolean first = true;
+        int lastPlayer=99;
         while (verify()) {
             Player play = players.get(index);
+
+            //prymary checkers
+            verifyPlayers();
+            if(modeGame) break;
+
             if (players.get(index).isStatus()) {           
                 try {
-                    s.line("Jogador" + play.getNamePlayer());
+                    lastPlayer = play.getNamePlayer();
+                    s.line("Jogador" + lastPlayer);
                     if(first)
                         addItem();
                     else{
@@ -90,22 +99,18 @@ public class Game {
             }
             else{
                 s.line("\nJogador"+play.getNamePlayer()+" está fora...\n");
-                verifyPlayers();
             }
 
-            //checkers
+            //increment checkers
             index++;
             if(index==players.size()) index=0;
-            if(play.getPoints()>=gotcha && modeGame) break;
         }
-        endGame();
+        s.endGame(lastPlayer);
     }
 
     // print game
     public void show(Player play) throws InterruptedException, IOException {
         System.out.print("Atenção");
-        
-
         for (int i = 0; i < 3; i++) {
             Thread.sleep(500);
             System.out.print(".");    
@@ -130,6 +135,7 @@ public class Game {
             if (choose>3 || !it.getColor().equals(Color.values()[choose]))
                 return false;
         }
+        play.addPoints();
         s.clear();
         return true;
     }
@@ -145,8 +151,7 @@ public class Game {
     //check satatus player
     private boolean verify() {
         for (Player player : players) {
-            if(player.isStatus()){
-                player.addPoints(); 
+            if(player.isStatus()){ 
                 return true;
             }
         }
@@ -190,7 +195,7 @@ public class Game {
         s.clear();
         do{
             s.line("Crie uma cor");
-            s.line("Digite AZUL = 0, VERDE = 1, AMARELO 2 ou VERMELHO = 3:");
+            s.line("Digite AZUL = 0, VERDE = 1, AMARELO = 2 ou VERMELHO = 3:");
             aux = input.nextInt();
         }
         while(aux>3);

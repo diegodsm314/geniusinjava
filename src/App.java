@@ -15,5 +15,6 @@ public class App {
             s.clear();
             g.Gamming();
         }
+        
     }
 }
