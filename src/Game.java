@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,6 +7,7 @@ public class Game {
     private boolean modeGame;
     private ArrayList<Item> vector;
     private ArrayList<Player> players;
+    private Show s = new Show();
 
     public Game(int numPlayers, int codeSelect) {
         this.modeGame = (numPlayers<2 ? true : false); //true=singleplayer; false=multiplayer
@@ -36,18 +38,19 @@ public class Game {
                 Item it = new Item();
                 this.getVector().add(it);  
                 try {
-                    System.out.println("Jogador" + play.getNamePlayer());
-                    show(play);
+                    s.clear();
+                    s.line("Jogador" + play.getNamePlayer());
+                    this.show(play);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 if (!trying(play)) {
-                    System.out.println("Errou!\n");
+                    s.line("Errou!\n");
                     play.setStatus();  
                 }
             }
             else{
-                System.out.println("\nJogador"+play.getNamePlayer()+" está fora...\n");
+                s.line("\nJogador"+play.getNamePlayer()+" está fora...\n");
                 verifyPlayers();
             }
 
@@ -59,20 +62,20 @@ public class Game {
         endGame();
     }
 
-    public void createGamming() {
+    public void createGamming() throws IOException, InterruptedException {
         int index = 0;
         boolean first = true;
         while (verify()) {
             Player play = players.get(index);
             if (players.get(index).isStatus()) {           
                 try {
-                    System.out.println("Jogador" + play.getNamePlayer());
+                    s.line("Jogador" + play.getNamePlayer());
                     if(first)
                         addItem();
                     else{
                         show(play);
                         if (!trying(play)) {
-                            System.out.println("Errou!\n");
+                            s.line("Errou!\n");
                             play.setStatus();                
                         }
                         else{
@@ -86,7 +89,7 @@ public class Game {
                 }
             }
             else{
-                System.out.println("\nJogador"+play.getNamePlayer()+" está fora...\n");
+                s.line("\nJogador"+play.getNamePlayer()+" está fora...\n");
                 verifyPlayers();
             }
 
@@ -99,23 +102,35 @@ public class Game {
     }
 
     // print game
-    public void show(Player play) throws InterruptedException {
+    public void show(Player play) throws InterruptedException, IOException {
+        System.out.print("Atenção");
+        
+
+        for (int i = 0; i < 3; i++) {
+            Thread.sleep(500);
+            System.out.print(".");    
+        }
+
         for (Item i : this.getVector()) {
+            s.clear();
+            Thread.sleep(500);
             System.out.println(i.getColor());
             Thread.sleep(1200);
+            s.clear();
         }
     }
 
     // tryng accept
-    public boolean trying(Player play) {
+    public boolean trying(Player play) throws InterruptedException {
         Scanner input = new Scanner(System.in);
         int choose;
-        System.out.println("Digite AZ0, VR1, AM2 ou VM3:");
+        s.line("Digite AZ0, VR1, AM2 ou VM3:");
         for (Item it : this.getVector()) {
             choose = input.nextInt();
-            if (!it.getColor().equals(Color.values()[choose]))
+            if (choose>3 || !it.getColor().equals(Color.values()[choose]))
                 return false;
         }
+        s.clear();
         return true;
     }
 
@@ -139,10 +154,10 @@ public class Game {
     }
 
     //ending game
-    private void endGame(){
-        System.out.println("Fim de jogo! \nPontuação:");
+    private void endGame() throws InterruptedException{
+        s.line("Fim de jogo! \nPontuação:");
         for (Player player : players) {           
-            System.out.println("Jogador"+player.getNamePlayer()+": "+player.getPoints());
+            s.line("Jogador"+player.getNamePlayer()+": "+player.getPoints());
         }
     }
 
@@ -168,12 +183,20 @@ public class Game {
         }
     }
 
-    private void addItem(){
+    private void addItem() throws InterruptedException{
         Scanner input = new Scanner(System.in);
-        System.out.println("Clique em uma cor");
         Item it = new Item();
-        it.setColor(input.nextInt());
+        int aux;
+        s.clear();
+        do{
+            s.line("Crie uma cor");
+            s.line("Digite AZUL = 0, VERDE = 1, AMARELO 2 ou VERMELHO = 3:");
+            aux = input.nextInt();
+        }
+        while(aux>3);
+        it.setColor(aux);
         vector.add(it);
+        s.clear();
     }
 
 }
