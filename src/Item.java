@@ -7,6 +7,11 @@ public class Item {
         this.color = getRandColor();
     }
 
+    //new
+    public Item(Color color) {
+        this.color = color;
+    }
+
     private Color getRandColor() {
         Random rand = new Random();
         int r = Math.abs(rand.nextInt()%4);
@@ -18,9 +23,6 @@ public class Item {
         return color;
     }
 
-    public void setColor(int color) {
-        this.color = Color.values()[color];
-    }
 
     
 }

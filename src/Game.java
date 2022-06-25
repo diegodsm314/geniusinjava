@@ -5,14 +5,14 @@ import java.util.Scanner;
 public class Game {
     private int gotcha;
     private boolean modeGame;
-    private ArrayList<Item> vector;
+    private ArrayList<Item> colorSequece; //colorSeq
     private ArrayList<Player> players;
     private Show s = new Show();
 
     public Game(int numPlayers, int codeSelect) {
         this.modeGame = (numPlayers<2 ? true : false); //true=singleplayer; false=multiplayer
         this.players= new ArrayList<>();
-        this.vector = new ArrayList<>();
+        this.colorSequece = new ArrayList<>();
         this.gotcha = modeSelect(codeSelect);
         addPlayer(numPlayers);
     }
@@ -25,8 +25,8 @@ public class Game {
         this.gotcha++;
     }
 
-    public ArrayList<Item> getVector() {
-        return vector;
+    public ArrayList<Item> getColorSequece() {
+        return colorSequece;
     }
 
     // Main game
@@ -35,13 +35,13 @@ public class Game {
         int lastPlayer=99;
         while (verify()) {
             Player play = players.get(index);
+            lastPlayer = play.getNamePlayer();
             verifyPlayers();
             if (players.get(index).isStatus()) {          
                 Item it = new Item();
-                this.getVector().add(it);  
+                this.getColorSequece().add(it);  
                 try {
                     s.clear();
-                    lastPlayer = play.getNamePlayer();
                     s.line("Jogador" + lastPlayer);
                     this.show(play);
                 } catch (InterruptedException e) {
@@ -54,6 +54,7 @@ public class Game {
             }
             else{
                 s.line("\nJogador"+play.getNamePlayer()+" está fora...\n");
+                s.waitText(20);
             }
 
             //checkers
@@ -70,6 +71,7 @@ public class Game {
         int lastPlayer=99;
         while (verify()) {
             Player play = players.get(index);
+            lastPlayer = play.getNamePlayer();
 
             //prymary checkers
             verifyPlayers();
@@ -77,7 +79,6 @@ public class Game {
 
             if (players.get(index).isStatus()) {           
                 try {
-                    lastPlayer = play.getNamePlayer();
                     s.line("Jogador" + lastPlayer);
                     if(first)
                         addItem();
@@ -116,7 +117,7 @@ public class Game {
             System.out.print(".");    
         }
 
-        for (Item i : this.getVector()) {
+        for (Item i : this.getColorSequece()) {
             s.clear();
             Thread.sleep(500);
             System.out.println(i.getColor());
@@ -129,10 +130,10 @@ public class Game {
     public boolean trying(Player play) throws InterruptedException {
         Scanner input = new Scanner(System.in);
         int choose;
-        s.line("Digite AZ0, VR1, AM2 ou VM3:");
-        for (Item it : this.getVector()) {
+        s.line("Digite AZUL = 0, VERDE = 1, AMARELO = 2 ou VERMELHO = 3:");
+        for (Item it : this.getColorSequece()) {
             choose = input.nextInt();
-            if (choose>3 || !it.getColor().equals(Color.values()[choose]))
+            if (choose>3 || !it.getColor().equals(Color.getColor(choose)))
                 return false;
         }
         play.addPoints();
@@ -158,14 +159,6 @@ public class Game {
         return false;
     }
 
-    //ending game
-    private void endGame() throws InterruptedException{
-        s.line("Fim de jogo! \nPontuação:");
-        for (Player player : players) {           
-            s.line("Jogador"+player.getNamePlayer()+": "+player.getPoints());
-        }
-    }
-
     private int modeSelect( int code) {
         switch(code){
             case 0: return 4; //TESTE
@@ -173,9 +166,9 @@ public class Game {
             case 20: return 14;
             case 30: return 20;
             case 40: return 31;
+            case 50: return 999;
             default: throw new Error("Error ModeSelect: Erro ao dissemimar escolha");
-        }
-        
+        }        
     }
 
     private void verifyPlayers(){
@@ -190,7 +183,6 @@ public class Game {
 
     private void addItem() throws InterruptedException{
         Scanner input = new Scanner(System.in);
-        Item it = new Item();
         int aux;
         s.clear();
         do{
@@ -199,9 +191,8 @@ public class Game {
             aux = input.nextInt();
         }
         while(aux>3);
-        it.setColor(aux);
-        vector.add(it);
+        Item it = new Item(Color.getColor(aux));
+        colorSequece.add(it);
         s.clear();
     }
-
 }

@@ -29,3 +29,4 @@ Neste caso as variaveis isStatus e namePlayer estão encapsuladas em jogador par
 ### Game.java
 Essa é a classe que é responsavel por rodar o jogo, onde todos os metodos relacionados ao jogo acontece.
 #### Contrutor
+O construtor de 'Game.java' 

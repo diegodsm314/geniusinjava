@@ -6,15 +6,23 @@ public class App {
         Show s = new Show();
         s.welcome();
         int numPlayers = s.numPlayers();
-        Game g = new Game(numPlayers,s.codeSelect());
-        if(s.modeSelect(numPlayers)){
+        int selectionMode = s.modeSelect(numPlayers);
+        Game g;
+        if(selectionMode==3){
+            g = new Game(numPlayers,50);            //modo "infinito"
             s.clear();
             g.createGamming();
         }
-        else {
+        else if(selectionMode==2){
+            g = new Game(numPlayers,50);            //modo "infinito"
             s.clear();
             g.Gamming();
         }
-        
+        else{
+            g = new Game(numPlayers,s.codeSelect());
+            s.clear();
+            g.Gamming();
+        }
+        input.close();
     }
 }

@@ -19,7 +19,7 @@ public class Show {
         return input.nextInt();
     }
 
-    public boolean modeSelect(int numPlayers) throws InterruptedException {
+    public int modeSelect(int numPlayers) throws InterruptedException {
         Scanner input = new Scanner(System.in);
         int aux;
         this.clear();
@@ -40,7 +40,7 @@ public class Show {
             default: this.line("Numero incorreto!\n");this.line("Entrando em modo normal");aux=1;break;
         } 
         this.waitText(58);
-        return aux == 3 ? true : false;
+        return aux;
     }
 
     public int codeSelect() throws InterruptedException {
