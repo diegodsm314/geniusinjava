@@ -5,15 +5,18 @@ import java.util.Scanner;
 public class Game {
     private int gotcha;
     private boolean modeGame;
-    private ArrayList<Item> colorSequece; //colorSeq
+    private ArrayList<Item> colorSequence; //colorSeq
     private ArrayList<Player> players;
     private Show s = new Show();
+    private boolean win;
+    
 
     public Game(int numPlayers, int codeSelect) {
         this.modeGame = (numPlayers<2 ? true : false); //true=singleplayer; false=multiplayer
         this.players= new ArrayList<>();
-        this.colorSequece = new ArrayList<>();
+        this.colorSequence = new ArrayList<>();
         this.gotcha = modeSelect(codeSelect);
+        this.win = true;
         addPlayer(numPlayers);
     }
 
@@ -25,8 +28,8 @@ public class Game {
         this.gotcha++;
     }
 
-    public ArrayList<Item> getColorSequece() {
-        return colorSequece;
+    public ArrayList<Item> getColorSequence() {
+        return colorSequence;
     }
 
     // Main game
@@ -36,14 +39,17 @@ public class Game {
         while (verify()) {
             Player play = players.get(index);
             lastPlayer = play.getNamePlayer();
-            verifyPlayers();
+
+            //prymary checker
+            if(this.verifyPlayers()) break;;
+
             if (players.get(index).isStatus()) {          
                 Item it = new Item();
-                this.getColorSequece().add(it);  
+                this.getColorSequence().add(it);  
                 try {
                     s.clear();
                     s.line("Jogador" + lastPlayer);
-                    this.show(play);
+                    this.showColors(play);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -60,9 +66,13 @@ public class Game {
             //checkers
             index++;
             if(index==players.size()) index=0;
-            if(play.getPoints()>=gotcha && modeGame) break;
+            if(play.getPoints()>=gotcha) {
+                win = true;
+                break;
+            }
+            else win = false;
         }
-        s.endGame(lastPlayer);
+        s.endGame(lastPlayer, win || !modeGame);
     }
 
     public void createGamming() throws IOException, InterruptedException {
@@ -73,9 +83,8 @@ public class Game {
             Player play = players.get(index);
             lastPlayer = play.getNamePlayer();
 
-            //prymary checkers
-            verifyPlayers();
-            if(modeGame) break;
+            //prymary checker
+            if(this.verifyPlayers()) break;
 
             if (players.get(index).isStatus()) {           
                 try {
@@ -83,7 +92,7 @@ public class Game {
                     if(first)
                         addItem();
                     else{
-                        show(play);
+                        showColors(play);
                         if (!trying(play)) {
                             s.line("Errou!\n");
                             play.setStatus();                
@@ -106,18 +115,18 @@ public class Game {
             index++;
             if(index==players.size()) index=0;
         }
-        s.endGame(lastPlayer);
+        s.endGame(lastPlayer,true);
     }
 
-    // print game
-    public void show(Player play) throws InterruptedException, IOException {
+    // show color sequence
+    public void showColors(Player play) throws InterruptedException, IOException {
         System.out.print("Atenção");
         for (int i = 0; i < 3; i++) {
             Thread.sleep(500);
             System.out.print(".");    
         }
 
-        for (Item i : this.getColorSequece()) {
+        for (Item i : this.getColorSequence()) {
             s.clear();
             Thread.sleep(500);
             System.out.println(i.getColor());
@@ -131,13 +140,15 @@ public class Game {
         Scanner input = new Scanner(System.in);
         int choose;
         s.line("Digite AZUL = 0, VERDE = 1, AMARELO = 2 ou VERMELHO = 3:");
-        for (Item it : this.getColorSequece()) {
+        for (Item it : this.getColorSequence()) {
             choose = input.nextInt();
+            input.close();
             if (choose>3 || !it.getColor().equals(Color.getColor(choose)))
                 return false;
         }
         play.addPoints();
         s.clear();
+        input.close();
         return true;
     }
 
@@ -161,7 +172,7 @@ public class Game {
 
     private int modeSelect( int code) {
         switch(code){
-            case 0: return 4; //TESTE
+            case 0: return 2; //TESTE
             case 10: return 8;
             case 20: return 14;
             case 30: return 20;
@@ -171,14 +182,15 @@ public class Game {
         }        
     }
 
-    private void verifyPlayers(){
+    private boolean verifyPlayers(){
         int coutPlayers=0;
         for (int i = 0; i < players.size(); i++) {
             if(!players.get(i).isStatus()) coutPlayers++;
         }
         if(coutPlayers==1){
-            this.modeGame=true;
+            return true;
         }
+        return false;
     }
 
     private void addItem() throws InterruptedException{
@@ -192,7 +204,9 @@ public class Game {
         }
         while(aux>3);
         Item it = new Item(Color.getColor(aux));
-        colorSequece.add(it);
+        colorSequence.add(it);
         s.clear();
+        input.close();
     }
+
 }

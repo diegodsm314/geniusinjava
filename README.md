@@ -2,7 +2,7 @@
 PT-Br
 
 ## Visão geral
-Inicialmente focaremos sobre o codigo base, e, ao final desta guia, vamos focar na interface grafica
+Inicialmente o foco será sobre as classes auxiliares, e no final a classe 
 
 ### Sobre o jogo
 O jogo Genius in Java consiste em um jogo que o jogador tem que ser capaz de decorar as cores, de modo que ganha quem completar a sequencia dada pelo jogo (modo normal) ou pela propria sequencia dos jogadores (modo criador).
@@ -11,7 +11,7 @@ O jogo Genius in Java consiste em um jogo que o jogador tem que ser capaz de dec
 O codigo base (engine) foi montado em java sema utilização de bibliotacas auxiliares, ja a interface grafica está sendo montada em JavaFX, uma framework mais atualizada.]
 
 ## Sobre o codigo
-O codigo é dividido em 6 classes, sendo que duas são do tipo "void main":
+O codigo é dividido em 6 classes, sendo que uma é a classe de execução 'App.java':
 
 ### Color.java
 Este enumerador foi desenvolvido com a intenção de tratarmos as cores como numeros, de modo que evitar colocar numeros no lugar das cores, evitando o uso de estrutura de condição.
@@ -28,5 +28,17 @@ Neste caso as variaveis isStatus e namePlayer estão encapsuladas em jogador par
 
 ### Game.java
 Essa é a classe que é responsavel por rodar o jogo, onde todos os metodos relacionados ao jogo acontece.
+#### Variaveis
+    int gotcha                      :armazena o valor maximo de rodadas
+    boolean modeGame                :responsavel pelo modo de jogo: singleplayer e multiplayer
+    ArrayList<Item> colorSequence   :vetor de itens (cores)
+    ArrayList<Player> players       :vetor de players
+    Show s                          :instancia de prints (da classe shows)           
+    boolean win                     :variavel para armazenar a vitoria
 #### Contrutor
-O construtor de 'Game.java' 
+O construtor de 'Game.java' recebe suas variaveis: numPlayerse e codeSelect que são responsaveis por:
+    - adicionar os players no vector 'players'
+    - determinar se o modo de jogo é single ou multiplayer
+    - determinar o valor maximo de rodadas ('gotcha')
+
+#### Metodos publicos

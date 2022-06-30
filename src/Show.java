@@ -37,7 +37,11 @@ public class Show {
             case 1: this.line("Modo Normal selelcionado!\nNeste modo você deve acertar as cores que o jogo determina.");break;
             case 2: this.line("Modo Desafio Selecionado!\nNeste modo você deve acertar mais cores que o seu oponente.");break;
             case 3: this.line("Modo Criador selecionado!\nNeste modo você deve acertar as cores do seu oponente e determinar a proxima cor.");break;
-            default: this.line("Numero incorreto!\n");this.line("Entrando em modo normal");aux=1;break;
+            default: {
+                this.line("Numero incorreto!\n");
+                this.line("Entrando em modo normal");
+                this.waitText(50);aux=1;break;
+            }
         } 
         this.waitText(58);
         return aux;
@@ -76,17 +80,28 @@ public class Show {
         System.out.println();
     }
 
-    public void endGame(int winPlayer) throws InterruptedException {
+    public void endGame(int winPlayer, boolean winner) throws InterruptedException {
         this.clear();
         this.line("::::::::::::::::::::::::::");
         this.line(":::::::Fim do Jogo!!::::::");
         this.line("::::::::::::::::::::::::::");
         Thread.sleep(2000);
         this.clear();
-        this.line("::::::::::::::::::::::::::::");
-        this.line("::::Vitoria do Jogador"+winPlayer+"!!:::");
-        this.line("::::::::::::::::::::::::::::");
-        Thread.sleep(2000);
-        this.clear();
+        if(winner){
+            this.line("::::::::::::::::::::::::::::");
+            this.line("::::Vitoria do Jogador"+winPlayer+"!!:::");
+            this.line("::::::::::::::::::::::::::::");
+            Thread.sleep(2000);
+            this.clear();
+        }
+        else{
+            this.line("::::::::::::::::::::::::::::");
+            this.line("::::::::Você perdeu!!:::::::");
+            this.line("::::::::::::::::::::::::::::");
+            Thread.sleep(2000);
+            this.clear();         
+        }
+
     }
+    
 }
