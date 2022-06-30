@@ -2,7 +2,7 @@
 PT-Br
 
 ## Visão geral
-Inicialmente o foco será sobre as classes auxiliares, e no final a classe 
+Inicialmente o foco será sobre as classes auxiliares, e no final a classe principal do jogo.
 
 ### Sobre o jogo
 O jogo Genius in Java consiste em um jogo que o jogador tem que ser capaz de decorar as cores, de modo que ganha quem completar a sequencia dada pelo jogo (modo normal) ou pela propria sequencia dos jogadores (modo criador).
@@ -37,8 +37,16 @@ Essa é a classe que é responsavel por rodar o jogo, onde todos os metodos rela
     boolean win                     :variavel para armazenar a vitoria
 #### Contrutor
 O construtor de 'Game.java' recebe suas variaveis: numPlayerse e codeSelect que são responsaveis por:
-    - adicionar os players no vector 'players'
-    - determinar se o modo de jogo é single ou multiplayer
-    - determinar o valor maximo de rodadas ('gotcha')
+    i) adicionar os players no vector 'players'
+    ii) determinar se o modo de jogo é single ou multiplayer
+    iii) determinar o valor maximo de rodadas ('gotcha')
 
-#### Metodos publicos
+#### Metodos privados (auxiliares)
+1. O metodo getColorSequence() é responsavel por retornar a sequencia de cores, seu uso é feito no metodo Gamming e create Gamming
+2. O metodo showColors() tem como objetivo mostrar as cores para o usuario, ele utiliza do objeto Show para exibir o usuario as cores.
+3. O metodo trying() é responsavel por avaliar se as cores digitadas pelo usuario condizem com a registrada pelo jogo (criado ou não). O metodo, por receber variaveis digitadas no teclado, foi tratado se caso o usuario não coloque um caractere diferente do estipulado.
+4. O metodo addPlayer() tem como objetivo adicionar os jogadores ao vetor 'players' esse metodo é utilizado no construtor da classe.
+5. O metodo verify() busca verificar se há algum player no jogo, chamando o metodo isStatus() dentro de cada objeto Player, este metodo é utilizado dentro do while dos metodos Gamming e createGamming como parametro para a continuidade do jogo.
+6. O metodo modeSelect() faz o filtro de nivelamento do jogo, onde ele atrubui a gotcha o valor de acordo com o nivel escolhido pelo usuario.
+7. O metodo verifyPlayers() faz a contagem de jogadores, se o numero de jogadores for iguial a 1, o jogo finaliza. A diferença entre ele e o verify(), é que se o modo for de apenas um jogador o uso entre os metodos se diferencia.
+

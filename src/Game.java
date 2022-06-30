@@ -20,18 +20,6 @@ public class Game {
         addPlayer(numPlayers);
     }
 
-    public int getGotcha() {
-        return gotcha;
-    }
-
-    public void addGotcha() {
-        this.gotcha++;
-    }
-
-    public ArrayList<Item> getColorSequence() {
-        return colorSequence;
-    }
-
     // Main game
     public void Gamming() throws Exception {
         int index = 0;
@@ -118,14 +106,20 @@ public class Game {
         s.endGame(lastPlayer,true);
     }
 
+    private ArrayList<Item> getColorSequence() {
+        return colorSequence;
+    }
+
     // show color sequence
-    public void showColors(Player play) throws InterruptedException, IOException {
-        System.out.print("Atenção");
+    private void showColors(Player play) throws InterruptedException {
+        //just print
+        s.line("Atenção");
         for (int i = 0; i < 3; i++) {
             Thread.sleep(500);
             System.out.print(".");    
         }
 
+        //engine
         for (Item i : this.getColorSequence()) {
             s.clear();
             Thread.sleep(500);
@@ -136,22 +130,25 @@ public class Game {
     }
 
     // tryng accept
-    public boolean trying(Player play) throws InterruptedException {
+    private boolean trying(Player play) throws InterruptedException {
         Scanner input = new Scanner(System.in);
-        int choose;
+        Integer choose;
         s.line("Digite AZUL = 0, VERDE = 1, AMARELO = 2 ou VERMELHO = 3:");
         for (Item it : this.getColorSequence()) {
-            choose = input.nextInt();
-            input.close();
-            if (choose>3 || !it.getColor().equals(Color.getColor(choose)))
+            try {
+                choose = input.nextInt();
+                if (choose>3 || !it.getColor().equals(Color.getColor(choose)))
+                    return false;
+            } catch (Exception e) {
+                s.line("Caractere incorreto!!");
+                s.waitText(20);
                 return false;
+            }
         }
         play.addPoints();
         s.clear();
-        input.close();
         return true;
     }
-
 
     // new player add
     private void addPlayer(int numPlayers) {
@@ -172,7 +169,7 @@ public class Game {
 
     private int modeSelect( int code) {
         switch(code){
-            case 0: return 2; //TESTE
+            case 0: return 4; //TESTE
             case 10: return 8;
             case 20: return 14;
             case 30: return 20;
