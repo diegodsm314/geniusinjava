@@ -8,13 +8,14 @@ public class App {
         int numPlayers = s.numPlayers();
         int selectionMode = s.modeSelect(numPlayers);
         Game g;
+        
         if(selectionMode==3){
-            g = new Game(numPlayers,50);            //modo "infinito"
+            g = new Game(numPlayers,50);            //"infinite" mode
             s.clear();
             g.createGamming();
         }
         else if(selectionMode==2){
-            g = new Game(numPlayers,50);            //modo "infinito"
+            g = new Game(numPlayers,50);            //"infinite" mode
             s.clear();
             g.Gamming();
         }

@@ -99,7 +99,7 @@ public class Game {
                 s.line("\nJogador"+play.getNamePlayer()+" está fora...\n");
             }
 
-            //increment checkers
+            //increment checker
             index++;
             if(index==players.size()) index=0;
         }
@@ -203,7 +203,6 @@ public class Game {
         Item it = new Item(Color.getColor(aux));
         colorSequence.add(it);
         s.clear();
-        input.close();
     }
 
 }
