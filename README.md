@@ -78,3 +78,5 @@ Ao fim do jogo é chamada a função Show.endGame() com os parametros do ultimo 
 
 ### App.java
 Esta é a classe de execução onde puxa as informações dos comandos iniciais do usuario, vindos da classe Show e redireciona para a classe Game iniciando o jogo.
+
+![alt text](/util/NextStep%20Diagram.png)
